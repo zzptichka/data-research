@@ -46,13 +46,13 @@ lamps.features.map(lamp => {
     const properties = {
         'highway': 'street_lamp',
         'source': 'City of Ottawa',
-        'lamp_ref': parseInt(ref),
+        'source:ref': parseInt(ref),
     };
     if(type!=''){properties['lamp_type']=type};
-    if(pole!=''){properties['lamp_support']=pole};
+    if(pole!=''){properties['lamp_mount']=pole};
     if(material!=''){properties['material']=material};
     if(count>0){properties['lamp_flames']=count};
-    if(height>1){properties['lamp_height']=height};
+    if(height>1){properties['height']=height};
 
     const point = turf.point(lamp.geometry.coordinates, properties);
     let nearby = lampTree.search(turf.circle(point.geometry.coordinates, 2, 10, 'meters')).features
