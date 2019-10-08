@@ -46,7 +46,7 @@ lamps.features.map(lamp => {
     const properties = {
         'highway': 'street_lamp',
         'source': 'City of Ottawa',
-        'lamp_ref': parseInt(ref),
+        'source:ref': parseInt(ref),
     };
     if(type!=''){properties['lamp_type']=type};
     if(pole!=''){properties['lamp_mount']=pole};
