@@ -12,6 +12,7 @@ const oldTree = rbush(),
   newExtents = rbush()
 
 //source: https://open.canada.ca/data/en/dataset/3969368d-33b5-47c8-8953-f31b15d8e007
+//2019-10-09: 1439 features
 const oldPlaces = reader('facilities_empty.geojson')   //when there is an update to dataset replace this with previous dataset version (newCampsites previous value)
 const newPlaces = reader('Facilities_Installation_Point_vw_2019-10-09.geojson') //when there is an update to dataset save that file and provide the name here
 

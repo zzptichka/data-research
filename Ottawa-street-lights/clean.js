@@ -1,3 +1,7 @@
+//todo: make updatable: with next dataset update filter out existing street lights, leave only new ones
+//source: https://open.ottawa.ca/datasets/street-lights
+//2020-04-05: 72738
+
 "use strict";
 const turf = require("@turf/turf");
 const fs = require("fs");

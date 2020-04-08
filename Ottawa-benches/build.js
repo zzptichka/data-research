@@ -1,4 +1,4 @@
-//takes previous dataset, new dataset, drops old ones, builds OSM file with new benches
+//takes previous dataset, new dataset, drops old features, builds OSM file (and clusters geojson for task manager) with new features only
 
 "use strict";
 const turf = require("@turf/turf");
@@ -12,6 +12,7 @@ const oldTree = rbush(),
   newExtents = rbush()
 
 //source: https://open.ottawa.ca/datasets/benches
+//2020-04-05 - 1273 features
 const oldPlaces = reader('empty.geojson')   //when there is an update to dataset replace this with previous dataset version
 const newPlaces = reader('OttawaBenches_2020-04-05.geojson') //when there is an update to dataset save that file and provide the name here
 

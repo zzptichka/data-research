@@ -1,5 +1,4 @@
-//takes previous dataset, new dataset, filters duplicates, builds OSM file with new campsite nodes
-
+//Hasn't been imported yet as of 2020-04-07 - need to decide which features to import, etc
 "use strict";
 const turf = require("@turf/turf");
 const fs = require("fs");
@@ -11,6 +10,7 @@ const oldTree = rbush(),
   newTree = rbush(),
   newExtents = rbush()
 
+//takes previous dataset, new dataset, filters duplicates, builds OSM file with new campsite nodes
 //source: https://open.canada.ca/data/en/dataset/78af8288-d785-49e6-8773-e21a707d14ca
 const oldPlaces = reader('components_empty.geojson')   //when there is an update to dataset replace this with previous dataset version (newCampsites previous value)
 const newPlaces = reader('Facilities_Components_Installations_Composantes_Point_vw_2019_10_09.geojson') //when there is an update to dataset save that file and provide the name here
