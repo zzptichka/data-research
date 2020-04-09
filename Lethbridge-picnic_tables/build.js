@@ -11,10 +11,10 @@ const oldTree = rbush(),
     newTree = rbush(),
     newExtents = rbush()
 
-//source: http://openhub-esrica-apps.opendata.arcgis.com/datasets/bdd9701df3a645c386f608fe2099b557_0
-//2020-04-05 - 1003 features
+//source: http://opendata.lethbridge.ca/datasets/8fd139cd01a84df4a311f569fe583eff_0/data
+//2020-04-05 - 454 features
 const oldPlaces = reader('empty.geojson') //when there is an update to dataset replace this with previous dataset version
-const newPlaces = reader('LethbridgeBenches_2020-04-05.geojson') //when there is an update to dataset save that file and provide the name here
+const newPlaces = reader('LethbridgePicnicTables_2020-04-05.geojson') //when there is an update to dataset save that file and provide the name here
 
 oldPlaces.features.map(place => {
     const point = turf.point(place.geometry.coordinates);
@@ -25,7 +25,7 @@ console.log('Total features: ', newPlaces.features.length)
 let i = 1;
 newPlaces.features.map(place => {
     const properties = {
-        'amenity': 'bench',
+        'leisure': 'picnic_table',
         'source': 'City of Lethbridge',
     };
     switch (place.properties["Material"]) {
@@ -42,14 +42,14 @@ newPlaces.features.map(place => {
             properties['material'] = 'concrete';
             break;
     }
-    if (place.properties['Dedication']) {
-        properties['description'] = 'Commemorative bench: ' + place.properties['Dedication'];
+    if (place.properties['Comment']) {
+        properties['description'] = place.properties['Comment'];
     }
-    if (place.properties['Comment'] == "Players bench" ||
-        place.properties['Comment'] == "no back rest") {
-        properties['backrest'] = 'no';
-    } else {
-        properties['backrest'] = 'yes';
+    if (place.properties['Accessible' == 'Yes']) {
+        properties['accessible'] = 'yes';
+    }
+    if (place.properties['Accessible' == 'No']) {
+        properties['accessible'] = 'no';
     }
 
     const point = turf.point(place.geometry.coordinates, properties);
@@ -65,14 +65,15 @@ newPlaces.features.map(place => {
         circle = turf.union(area, circle)
         newExtents.remove(area);
     }
-    circle.properties['benches'] = nearby.length;
+    circle.properties['features'] = nearby.length;
     newExtents.insert(circle);
 
-    newTree.insert(point) console.log('New bench', i++)
+    newTree.insert(point)
+    console.log('New table', i++)
 });
 
-console.log('Clusters:', newExtents.all().features.length, 'Benches:', newTree.all().features.length)
+console.log('Clusters:', newExtents.all().features.length, 'Tables:', newTree.all().features.length)
 
 const osm = geojson2osm.geojson2osm(newTree.all())
-fs.writeFileSync('lethbridge-new-benches.osm', osm);
-fs.writeFileSync('lethbridge-new-benches_clusters.geojson', JSON.stringify(newExtents.all(), null, 4));
+fs.writeFileSync('lethbridge-new-tables.osm', osm);
+fs.writeFileSync('lethbridge-new-tables_clusters.geojson', JSON.stringify(newExtents.all(), null, 4));
