@@ -11,10 +11,10 @@ const oldTree = rbush(),
     newTree = rbush(),
     newExtents = rbush()
 
-//source: http://openhub-esrica-apps.opendata.arcgis.com/datasets/bdd9701df3a645c386f608fe2099b557_0
-//2020-04-05 - 1003 features
+//source: https://opendata.victoria.ca/datasets/benches
+//2020-04-05 - 946 features
 const oldPlaces = reader('empty.geojson') //when there is an update to dataset replace this with previous dataset version
-const newPlaces = reader('LethbridgeBenches_2020-04-05.geojson') //when there is an update to dataset save that file and provide the name here
+const newPlaces = reader('VictoriaBenches_2020-04-05.geojson') //when there is an update to dataset save that file and provide the name here
 
 oldPlaces.features.map(place => {
     const point = turf.point(place.geometry.coordinates);
@@ -26,30 +26,34 @@ let i = 1;
 newPlaces.features.map(place => {
     const properties = {
         'amenity': 'bench',
-        'source': 'City of Lethbridge',
+        'source': 'City of Victoria',
     };
     switch (place.properties["Material"]) {
-        case "Plastic":
+        case "plastic":
             properties['material'] = 'plastic';
             break;
-        case "Metal":
+        case "metal":
             properties['material'] = 'metal';
             break;
-        case "Wood":
+        case "wood":
             properties['material'] = 'wood';
             break;
-        case "Concrete":
-            properties['material'] = 'concrete';
+    }
+    switch (place.properties["Condition"]) {
+        case "Average":
+        case "Fair":
+            properties['condition'] = 'fair';
+            break;
+        case "Good":
+        case "New":
+            properties['condition'] = 'good';
+            break;
+        case "Poor":
+            properties['condition'] = 'poor';
             break;
     }
-    if (place.properties['Dedication']) {
-        properties['description'] = 'Commemorative bench: ' + place.properties['Dedication'];
-    }
-    if (place.properties['Comment'] == "Players bench" ||
-        place.properties['Comment'] == "no back rest") {
-        properties['backrest'] = 'no';
-    } else {
-        properties['backrest'] = 'yes';
+    if (place.properties["InstallDat"]) {
+        properties['start_date'] = place.properties["InstallDat"].substring(0, 4);
     }
 
     const point = turf.point(place.geometry.coordinates, properties);
@@ -75,5 +79,5 @@ newPlaces.features.map(place => {
 console.log('Clusters:', newExtents.all().features.length, 'Benches:', newTree.all().features.length)
 
 const osm = geojson2osm.geojson2osm(newTree.all())
-fs.writeFileSync('lethbridge-new-benches.osm', osm);
-fs.writeFileSync('lethbridge-new-benches_clusters.geojson', JSON.stringify(newExtents.all(), null, 4));
+fs.writeFileSync('victoria-new-benches.osm', osm);
+fs.writeFileSync('victoria-new-benches_clusters.geojson', JSON.stringify(newExtents.all(), null, 4));
