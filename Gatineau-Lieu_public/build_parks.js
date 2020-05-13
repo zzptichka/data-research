@@ -25,7 +25,7 @@ console.log('Total features: ', newPlaces.features.length)
 let i = 1;
 newPlaces.features.map(place => {
     
-    if(place.properties.TYPE!="Parc récréatif")
+    if(place.properties.TYPE!="Parc récréatif" && place.properties.TYPE!="Autre parc")
         return;
 
     const name = place.properties.NOM_TOPOGR;
@@ -51,7 +51,7 @@ newPlaces.features.map(place => {
 
     const point = turf.point(place.geometry.coordinates, properties);
     let nearby = oldTree.search(turf.circle(point.geometry.coordinates, 1, 100, 'meters')).features //check if there was an old one within 1m
-    if (nearby.find(ele => ele.properties["OBJECTID"] == place.properties["OBJECTID"])) { //doesn't work? - double-check
+    if (nearby.find(ele => ele.properties["ENTITEID"] == place.properties["ENTITEID"])) { //doesn't work? - double-check
         return;
     }
 
