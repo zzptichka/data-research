@@ -55,7 +55,7 @@ newPlaces.features.map(place => {
     }
     if(name.indexOf('Jeux d\'eau')!=-1){
       properties['leisure']='playground';
-      properties['playground']='splashpad';
+      properties['playground']='splash_pad';
     }
     if(name.indexOf('Piscine')!=-1){
       properties['leisure']='swimming_pool';
